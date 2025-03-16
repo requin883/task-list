@@ -1,34 +1,30 @@
-const fs = require('fs');
+import fs from 'fs';
 
 class File {
-  constructor(fileName, data) {
-  this.fileName = fileName;
-  this.data = data;
+  constructor(fileName) {
+    this.fileName = fileName;
   };
-  create (){
-    fs.writeFile(this.fileName, this.data, (err) => {
+  createOrUpdate(newData) {
+    const data = newData || '';
+    fs.appendFile(this.fileName, data, (err) => {
       if (err) throw err;
       console.log('The file has been saved!');
     });
   }
-  read (){
+  read() {
     fs.readFile(this.fileName, 'utf8', (err, data) => {
       if (err) throw err;
       console.log(data);
     });
   }
-  update(newData){
-    fs.writeFile(this.fileName, newData, (err) => {
-      if (err) throw err;
-      console.log('The file has been updated!');
-    });
-  }
-  delete (){
+  delete() {
     fs.unlink(this.fileName, (err) => {
       if (err) throw err;
       console.log('The file has been deleted!');
     });
   }
 }
+
+export default File;
 
 
