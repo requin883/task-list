@@ -31,7 +31,13 @@ export class TaskList {
   getTask(taskName) {
     return this.tasks.find((t) => t.taskName === taskName);
   }
+  getAllTasks() {
+    return this.tasks;
+  }
   getTasksbyStatus(taskStatus) {
     return this.tasks.filter((t) => t.taskStatus === taskStatus);
+  }
+  deleteAll() {
+    this.tasks = [];
   }
 }
