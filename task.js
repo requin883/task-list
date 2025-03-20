@@ -1,13 +1,12 @@
-import { taskListName } from "./data";
 
 export class Task {
   constructor(taskName, taskStatus) {
     this.taskName = taskName;
-    this.taskStatus = taskStatus || 'in progress';
+    this.taskStatus = taskStatus || null;
   }
   update({ taskName, taskStatus }) {
     this.taskName = taskName || this.taskName;
-    if (taskStatus !== 'done' || taskStatus !== 'in progress') {
+    if (taskStatus !== 'done' || taskStatus !== 'in progress' || taskStatus !== null) {
       throw new Error('taskStatus must be either done or in progress');
     } else {
       this.taskStatus = taskStatus || this.taskStatus;
@@ -17,14 +16,22 @@ export class Task {
     this.taskName = '';
     this.taskStatus = '';
   }
-  filterTasksByStatus = (status) => {
-    fs.readFile(taskListName, function (err, data) {
-      if (err) {
-        return console.error(err);
-      }
-      const tasks = data.toString().split('\n');
-      const filteredTasks = tasks.filter(task => task.includes(status));
-      console.log(filteredTasks.join('\n'));
-    });
+}
+
+export class TaskList {
+  constructor() {
+    this.tasks = [];
+  }
+  add(task) {
+    this.tasks.push(task);
+  }
+  delete(task) {
+    this.tasks = this.tasks.filter((t) => t !== task);
+  }
+  getTask(taskName) {
+    return this.tasks.find((t) => t.taskName === taskName);
+  }
+  getTasksbyStatus(taskStatus) {
+    return this.tasks.filter((t) => t.taskStatus === taskStatus);
   }
 }
