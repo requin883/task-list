@@ -1,10 +1,11 @@
 import readline from 'readline';
 import { userPrompts } from './data.js';
 import File from './writefile.js';
-import { readTasks } from './services.js';
+import { readAllTasks } from './services.js';
 import { taskListName } from './data.js';
-import Task from './task.js';
+import { Task } from './task.js';
 import { getUserTaskName, getUserTaskStatus } from './services.js';
+import { TaskList } from './task.js';
 
 const newFile = new File(taskListName);
 const rl = readline.createInterface({
@@ -14,7 +15,7 @@ const rl = readline.createInterface({
 
 const getUserInput = () => {
   rl.question(`${userPrompts.slice(0).join('\n')}\n`, (userInput) => {
-    if (!userInput || isNaN(userInput)) {
+    if (!userInput || isNaN(userInput) || userInput < 1 || userInput > 7) {
       console.log('Invalid input. Please try again.');
       return getUserInput();
     }
@@ -27,7 +28,13 @@ const getUserInput = () => {
 const handleUserinput = (userInput) => {
   switch (userInput) {
     case '1':
-      readTasks();
+      if (!newFile) {
+        console.log('No tasks available');
+        return false;
+      } else {
+        
+        readAllTasks();
+      }
       break;
     case '2':
       filterTasksByStatus('done');
