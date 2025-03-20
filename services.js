@@ -1,13 +1,21 @@
 import fs from 'fs';
 import { taskListName } from './data.js';
 
+const writetasktofile = (taskList) => {
+  fs.writeFile(taskListName, JSON.stringify(taskList), (err) => {
+    if (err) {
+      return console.error(err);
+    }
+    console.log('Data written successfully');
+  });
+}
 
-export const readTasks = () => {
+export const readAllTasks = () => {
   fs.readFile(taskListName, function (err, data) {
     if (err) {
       return console.error(err);
     }
-    console.log(data.toString());
+    console.log(JSON.parse(data));
   });
 }
 
